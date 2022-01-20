@@ -1,3 +1,41 @@
+%% 2022-01-20 陈晓：想让enumerate环境紧跟文字而不另起一行
+% \documentclass{ctexart}
+% \usepackage{varwidth}
+% \usepackage{enumitem}
+% \makeatletter
+% \let\@enumerate\enumerate
+% \let\@endenumerate\endenumerate
+% \RenewDocumentCommand{ \enumerate } { s }
+%   {
+%     \IfBooleanTF {#1}
+%       {
+%         \RenewDocumentCommand{ \endenumerate }{}
+%           {
+%               \@endenumerate
+%             \end{varwidth}
+%           }
+%         \begin{varwidth}{\hsize}
+%           \@enumerate
+%       }
+%       {\@enumerate}
+%   }
+% \makeatother
+% \begin{document}
+
+% 进入列表：
+%   \begin{enumerate}[label = \roman*]
+%     \item 第一条目
+%     \item 第二条目
+%   \end{enumerate}
+
+% 进入列表：
+%   \begin{enumerate}*[label = \roman*]
+%     \item 第一条目
+%     \item 第二条目
+%   \end{enumerate}
+
+% \end{document}
+
 % 2022-01-20 群 ulem uline text想要红色 线是黑色
 % 直接在uline里面用\color命令达不到理想效果
 % https://tex.stackexchange.com/questions/349470/underline-colored-text-with-linebreak
