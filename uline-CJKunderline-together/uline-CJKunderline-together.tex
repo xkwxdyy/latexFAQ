@@ -1,0 +1,81 @@
+\documentclass{ctexart}
+\usepackage{xcolor}
+\usepackage{xeCJKfntef}
+
+\ExplSyntaxOn
+
+\tl_new:N \l__coloruline_line_color_tl
+\tl_new:N \l__coloruline_text_color_tl
+\dim_new:N \l__coloruline_line_width_dim
+
+\keys_define:nn { coloruline }
+  {
+    textcolor .tl_set:N = \l__coloruline_text_color_tl,
+    textcolor .initial:n = black,
+    linecolor .tl_set:N = \l__coloruline_line_color_tl,
+    linecolor .initial:n = black,
+    line-width .dim_set:N = \l__coloruline_line_width_dim,
+    line-width .initial:n = 0.4pt,
+    thickness .dim_set:N = \l__coloruline_line_width_dim,
+    thickness .initial:n = 0.4pt,
+  }
+\NewDocumentCommand{ \coloruline } { O{} m }
+  {
+    \group_begin:
+      \keys_set:nn { coloruline } {#1}
+      \bgroup
+        \color{ \tl_use:N \l__coloruline_text_color_tl }
+        \markoverwith
+        {
+          \textcolor
+            { \tl_use:N \l__coloruline_line_color_tl }
+            { \rule[-0.5ex]{2pt}{ \l__coloruline_line_width_dim } }
+        }
+        \ULon{#2}
+    \group_end:
+  }
+
+\NewDocumentCommand{ \colorCJKuline }{ O{} m }
+  {
+    \group_begin:
+      \keys_set:nn { coloruline } {#1}
+      \CJKunderline
+        [
+          format = { \color{\l__coloruline_line_color_tl} },
+          textformat = { \color{\l__coloruline_text_color_tl} },
+          thickness = \l__coloruline_line_width_dim
+        ]
+        {#2}
+    \group_end:
+  }
+
+\RenewDocumentCommand{ \underline }{ s O{} m }
+  {
+    \IfBooleanTF {#1}
+      {
+        \colorCJKuline[#2]{#3}
+      }
+      {
+        \coloruline[#2]{#3}
+      }
+  }
+\ExplSyntaxOff
+
+\begin{document}
+
+\underline[textcolor = red, linecolor = blue]{
+  这是一段中文测试，具体测试什么呢，想测试uline的中文支持，看看能否换行
+}
+
+\underline{
+  When we published our data analysis of the security questions on Stack Overflow and the Information Security Stack Exchange back in October, we found that every time that there was a major vulnerability or breach, there would be a corresponding uptick in the number of questions asked. It made intuitive sense, but the data confirmed it. But we didn’t expect to have new data to confirm this trend so soon. 
+}
+
+\underline*[thickness = 1pt]{
+  这是一段中文测试，具体测试什么呢，想测试uline的中文支持，看看能否换行
+}
+
+\underline*[line-width = 1pt]{
+  When we published our data analysis of the security questions on Stack Overflow and the Information Security Stack Exchange back in October, we found that every time that there was a major vulnerability or breach, there would be a corresponding uptick in the number of questions asked. It made intuitive sense, but the data confirmed it. But we didn’t expect to have new data to confirm this trend so soon. 
+}
+\end{document}

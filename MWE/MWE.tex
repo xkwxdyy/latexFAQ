@@ -1,0 +1,281 @@
+% 2022-01-20 群 ulem uline text想要红色 线是黑色
+% 直接在uline里面用\color命令达不到理想效果
+% https://tex.stackexchange.com/questions/349470/underline-colored-text-with-linebreak
+% https://tex.stackexchange.com/questions/530454/changing-the-color-of-special-underlines-with-ulem
+% \documentclass{article}
+% \usepackage{ulem}
+% \usepackage{xcolor}
+
+% \definecolor{customdeepgreen}{HTML}{006A71}
+
+% \makeatletter
+%     \newcommand{\coloruline}[2]{%
+%         \newcommand\temp@reduline{\bgroup\markoverwith
+%             {\textcolor{#1}{\rule[-0.5ex]{2pt}{0.4pt}}}\ULon}%
+%         \temp@reduline{#2}%
+%     }
+
+%     \newcommand{\coloruuline}[2]{%
+%         \UL@protected\def\temp@uuline{\leavevmode \bgroup
+%             \UL@setULdepth
+%             \ifx\UL@on\UL@onin \advance\ULdepth2.8\p@\fi
+%             \markoverwith{\textcolor{#1}{\lower\ULdepth\hbox
+%                 {\kern-.03em\vbox{\hrule width.2em\kern1\p@\hrule}\kern-.03em}}}%
+%         \ULon}%
+%         \temp@uuline{#2}%
+%     }
+
+%     \newcommand{\coloruwave}[2]{%
+%         \UL@protected\def\temp@uwave{\leavevmode \bgroup 
+%         \ifdim \ULdepth=\maxdimen \ULdepth 3.5\p@
+%         \else \advance\ULdepth2\p@ 
+%         \fi \markoverwith{\textcolor{#1}{\lower\ULdepth\hbox{\sixly \char58}}}\ULon}
+%         \font\sixly=lasy6 % does not re-load if already loaded, so no memory drain.
+%         \temp@uwave{#2}%
+%     }
+% \makeatother
+
+% % 这个做法更本质
+% \newcommand\reduline{\bgroup\color{red}\markoverwith
+% {\textcolor{black}{\rule[-0.5ex]{2pt}{0.4pt}}}\ULon}
+
+
+% \begin{document}
+% \color{red}
+% \coloruline{black}{
+%   When we published our data analysis of the security questions on Stack Overflow and the Information Security Stack Exchange back in October, we found that every time that there was a major vulnerability or breach, there would be a corresponding uptick in the number of questions asked. It made intuitive sense, but the data confirmed it. But we didn’t expect to have new data to confirm this trend so soon. 
+% }
+
+% \reduline{When we published our data analysis of the security questions on Stack Overflow and the Information Security Stack Exchange back in October, we found that every time that there was a major vulnerability or breach, there would be a corresponding uptick in the number of questions asked. It made intuitive sense, but the data confirmed it. But we didn’t expect to have new data to confirm this trend so soon. }
+% \end{document}
+
+
+% 2022-01-20 群 textcolor不能换行
+% \documentclass{article}
+% \usepackage{xcolor}
+% \usepackage{lipsum}
+% \begin{document}
+% test
+
+% % {
+% %   \color{red} 
+% %   testtest
+
+% %   testtest
+% % }
+
+% \begingroup
+%   \color{red} 
+%   testtest
+
+%   \lipsum[2]
+% \endgroup
+
+% test
+% \end{document}
+
+% 2022-01-19 群 表格三校联考 居中
+% \documentclass{ctexart}
+% \usepackage{tabularray}
+
+% \begin{document}
+% \begin{tblr}{
+%   cell{1}{1} = {r = 3}{c},
+%   column{2} = {c}
+% }
+%   2021年  & 哈尔滨师大附中 & \\
+%           &  东北师大附中  & 高三第一次联考 \\
+%           & 辽宁省实验中学
+% \end{tblr}
+
+% 东北师大附中高三第一次联考
+% \end{document}
+
+% % 2022-01-19 驴哥代码优化
+% \documentclass{ctexart}
+
+% \begin{document}
+% \begin{center}
+%   \zihao{-3} 2010年普通高校招生全国统一考试 \\
+%   \textbf{\zihao{-2} 理科数学 \zihao{4}（必修+选修II）}
+% \end{center}
+% \end{document}
+
+
+
+% % 2022-01-16 帮杨端老师做控制答案显示的命令
+% \documentclass[UTF8,12pt]{ctexart}
+% \ExplSyntaxOn
+% \bool_new:N \l__show_fill_in_bool
+% \dim_new:N \l__fill_twoside_distance_dim
+% \keys_define:nn { yang / showanswer }
+%   {
+%     answer .choice:,
+%     answer / hide .code:n = 
+%       {
+%         \bool_set_false:N \l__show_fill_in_bool
+%       },
+%     answer / show .code:n = 
+%       {
+%         \bool_set_true:N \l__show_fill_in_bool
+%       },
+%     answer .initial:n = show,
+%     twoside .dim_set:N = \l__fill_twoside_distance_dim,
+%     twoside .initial:n = 1em,
+%   }
+
+% \NewDocumentCommand{ \yangsetup }{ m }
+%   {
+%     \keys_set:nn { yang / showanswer } {#1}
+%   }
+
+% \NewDocumentCommand { \fillin } { O{} m }
+%   {
+%     \group_begin:
+%       \keys_set:nn { yang / showanswer } {#1}
+%       \bool_if:NTF \l__show_fill_in_bool
+%         {
+%           \underline{ \hspace*{\l__fill_twoside_distance_dim} #2  \hspace*{\l__fill_twoside_distance_dim} }
+%         }
+%         {
+%           \underline{ \hspace*{\l__fill_twoside_distance_dim} \phantom{#2} \hspace*{\l__fill_twoside_distance_dim} }
+%         }
+%     \group_end:
+%   }
+% \ExplSyntaxOff
+
+
+% \yangsetup{
+%   answer = show,
+%   twoside = 1em
+% }
+% % \yangsetup{ answer = hide }
+
+% \begin{document}
+
+
+% \section{古诗默写}
+
+
+% 横看成岭侧成峰，\fillin{远近高低各不同}。
+
+% 横看成岭侧成峰，\fillin[answer = hide]{远近高低各不同}。
+
+
+% \section{短语填空}
+
+% 杨老师是 \fillin[twoside = 0.8em]{男神}
+
+% 杨老师是 \fillin{男神}
+
+% 杨老师是 \fillin[twoside = 1.5em]{男神}
+
+
+
+% \end{document}
+
+% 2022-01-16 驴哥
+% \documentclass[a4paper]{ctexart}
+% \usepackage{geometry} 
+% \usepackage{fancyhdr} 
+% \usepackage{lastpage} 
+% \usepackage{graphicx}
+% % \fancyhf{ }
+% \fancyhead[l] 
+% {\heiti \zihao{4} 石首市第一中学 }  
+% \fancyhead[c]{\includegraphics[width = 8mm]{0.png}} 
+% \fancyhead[r]{数学教研组} 
+% \fancyfoot[l]{\tt  高一} 
+% \fancyfoot[c]  % 问题出在{c}→[c]
+% {\zihao{-5} 第 \thepage  页  \quad  共 \pageref{LastPage}  页 }
+% \fancyfoot[r]{\itshape 高一备课组 }
+% \renewcommand{\headrulewidth}{0.6pt}
+% \renewcommand{\footrulewidth}{0.6pt}
+
+% \pagestyle{fancy} 
+
+% \begin{document}
+% 	正文
+% \end{document}
+
+
+% https://xkwxdyy.github.io/2022/01/14/enumerate-continume-numbering-within-chapter/
+% \documentclass{book}
+% \usepackage{enumitem}
+% \usepackage{etoolbox}
+% \ExplSyntaxOn
+% \makeatletter
+% \let\@enumerate\enumerate
+% \let\@endenumerate\endenumerate
+
+% \RenewDocumentEnvironment{enumerate}{ O{} !b }
+%   {
+%     \int_compare:nNnTF { \theenumi } = {0}
+%       { \@enumerate[#1] }
+%       { \@enumerate[resume*, #1] }
+%       #2
+%   }
+%   {
+%     \@endenumerate
+%   }
+
+% % 下面两种方法都行
+% % 第一种是用etoolbox的pretocmd
+% % \pretocmd{\chapter}{\setcounter{enumi}{0}}{}{}
+
+% % 第二种是copy一个副本出来重定义chapter
+% \let\ch@pter\chapter
+% \cs_set_eq:NN \chapter:nn \chapter
+% \cs_new:Npn \chapter_star:n #1
+%   {
+%     \chapter:nn * {#1}
+%   }
+% % \def\chapter{
+% %   \setcounter{enumi}{0}
+% %   \ch@pter
+% % }
+
+% \RenewDocumentCommand{ \chapter }{ s O{#3} m }   % 注意#2的默认值是#3，如果为空的话目录和页眉就没有标题了
+%   {
+%     \IfBooleanTF {#1}
+%       { \chapter_star:n {#3} }
+%       { \chapter:nn [#2] {#3} }
+%     \setcounter{enumi}{0}
+%   }
+% \makeatother
+% \ExplSyntaxOff
+
+
+% \begin{document}
+
+% \tableofcontents
+
+% \chapter*{1}
+
+% \begin{enumerate}[label = \roman*.]
+%   \item 1
+%   \item 2
+% \end{enumerate}
+
+% \begin{enumerate}
+%   \item 3
+%   \item 4
+% \end{enumerate}
+
+
+% \chapter{test}
+
+% \begin{enumerate}
+%   \item 1
+%   \item 2
+% \end{enumerate}
+
+% \begin{enumerate}
+%   \item 3
+%   \item 4
+%   \item 5
+% \end{enumerate}
+
+% \newpage
+% 6
+% \end{document}

@@ -1,0 +1,24 @@
+\documentclass[border=5pt, tikz]{standalone}
+\usepackage{ctex}
+\usepackage{varwidth}
+\usetikzlibrary{shapes.geometric}
+\tikzset{
+  box/.style={
+      regular polygon,
+      regular polygon sides = 6,
+      minimum size = 100mm,
+      inner sep = 0mm,
+      outer sep = 0mm,
+      %inner color=orange!75!red!50!yellow,
+      %outer color=orange!75!red!75!yellow,
+      draw = orange,
+      text = red,
+    }
+}
+
+\begin{document}
+\begin{tikzpicture}
+  \node [box] {test};
+\end{tikzpicture}
+\end{document}
+
