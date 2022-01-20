@@ -36,6 +36,60 @@
 
 % \end{document}
 
+% 下面这个方法可支持跨页（用description和环境嵌套）
+%% https://tex.stackexchange.com/questions/147710/how-to-start-itemize-on-same-line-as-text/147719#147719
+% \documentclass{article}
+% \usepackage{enumitem}
+% \usepackage{lipsum} % just for the example
+
+% \newlength{\tmpdim}
+% \newenvironment{example}
+%  {\settowidth{\tmpdim}{\textbf{First chapter}}%
+%   \begin{description}[leftmargin=\tmpdim,labelwidth=0pt,labelsep=0pt]
+%   \item[\textbf{First chapter}]%
+%   \begin{itemize}[leftmargin=1.5em,labelsep=.5em, label = ]}
+%  {\end{itemize}\end{description}}
+
+% \begin{document}
+% \lipsum[2]
+% \begin{example}
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \item Such and such
+% \item So and so
+% \item Enough
+% \end{example}
+% \lipsum[3]
+% \end{document}
+
 % 2022-01-20 群 ulem uline text想要红色 线是黑色
 % 直接在uline里面用\color命令达不到理想效果
 % https://tex.stackexchange.com/questions/349470/underline-colored-text-with-linebreak
