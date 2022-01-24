@@ -1,209 +1,238 @@
-%% 2022-01-24 杨敏老师：选择题和填空题答案显示统一
-\documentclass{ctexart}
-\usepackage{choices}
-\usepackage{linegoal}
-\ExplSyntaxOn
-\tl_new:N \l__exampaper_choice_paren_answer_tl
-\dim_new:N \l__exampaper_fill_twoside_distance_dim
-\bool_new:N \l__exampaper_answer_show_bool
-\keys_define:nn { exampaper }
-  {
-    answer .choice:,
-    answer / show .code:n =
-      { \bool_set_true:N \l__exampaper_answer_show_bool },
-    answer / hide .code:n =
-      { \bool_set_false:N \l__exampaper_answer_show_bool },
-    answer .initial:n = show,
-    twoside .dim_set:N = \l__exampaper_fill_twoside_distance_dim,
-    twoside .initial:n = 1em,
-  }
-\NewDocumentCommand{ \paren } { O{} m }
-  {
-    \group_begin:
-      \keys_set:nn { exampaper } {#1}
-      \tl_set:Nn \l__exampaper_choice_paren_answer_tl
-        {
-          \bool_if:NTF \l__exampaper_answer_show_bool
-            {
-              \,\,#2\,\,
-            }
-            { \qquad }
-        }
-      \dim_set_eq:NN \l_tmpa_dim \linegoal
-      \dim_compare:nNnT { \l_tmpa_dim } < { \textwidth/50 }
-        { \par }
-      \hfill \makebox{(\tl_use:N \l__exampaper_choice_paren_answer_tl)}
-    \group_end:
-  }
-
-\NewDocumentCommand { \fillin } { O{} m }
-  {
-    \group_begin:
-      \keys_set:nn { exampaper } {#1}
-      \bool_if:NTF \l__exampaper_answer_show_bool
-        {
-          \underline{ \hspace*{ \l__exampaper_fill_twoside_distance_dim } #2  \hspace*{ \l__exampaper_fill_twoside_distance_dim } }
-        }
-        {
-          \underline{ \hspace*{ \l__exampaper_fill_twoside_distance_dim } \phantom{#2} \hspace*{ \l__exampaper_fill_twoside_distance_dim } }
-        }
-    \group_end:
-  }
-\NewDocumentCommand{ \exampapersetup }{ m }
-  { \keys_set:nn { exampaper } {#1} }
+%% 2022-01-24 乙醇哥 LaTeX3实现align*环境内的循环
+% \documentclass{article}
+% \usepackage{amsmath}
 
 
-\ExplSyntaxOff
+% \begin{document}
+% \ExplSyntaxOn
+%   \cs_set:Npn \my_fact:n #1 
+%     {
+%       \int_set:Nn \l_tmpa_int { 1 }
+%       \seq_clear:N \l_tmpa_seq
+%       \begin{align*}
+%         \int_step_inline:nn { #1 } 
+%           {
+%             \seq_put_right:Nn \l_tmpa_seq { ##1 }
+%             \int_set:Nn \l_tmpa_int 
+%               { \l_tmpa_int * ##1 }
+%             \seq_put_right:Nx \l_tmpb_seq 
+%               {
+%                 \int_use:N \l_tmpa_int  & = \seq_use:Nn \l_tmpa_seq { \times }
+%               }
+%           }
+%         \seq_use:Nn \l_tmpb_seq {\\}
+%       \end{align*}
+%     }
+%   \my_fact:n { 6 }
+% \ExplSyntaxOff
+% \end{document}
+
+% %% 2022-01-24 杨敏老师：选择题和填空题答案显示统一
+% \documentclass{ctexart}
+% \usepackage{choices}
+% \usepackage{linegoal}
+% \ExplSyntaxOn
+% \tl_new:N \l__exampaper_choice_paren_answer_tl
+% \dim_new:N \l__exampaper_fill_twoside_distance_dim
+% \bool_new:N \l__exampaper_answer_show_bool
+% \keys_define:nn { exampaper }
+%   {
+%     answer .choice:,
+%     answer / show .code:n =
+%       { \bool_set_true:N \l__exampaper_answer_show_bool },
+%     answer / hide .code:n =
+%       { \bool_set_false:N \l__exampaper_answer_show_bool },
+%     answer .initial:n = show,
+%     twoside .dim_set:N = \l__exampaper_fill_twoside_distance_dim,
+%     twoside .initial:n = 1em,
+%   }
+% \NewDocumentCommand{ \paren } { O{} m }
+%   {
+%     \group_begin:
+%       \keys_set:nn { exampaper } {#1}
+%       \tl_set:Nn \l__exampaper_choice_paren_answer_tl
+%         {
+%           \bool_if:NTF \l__exampaper_answer_show_bool
+%             {
+%               \,\,#2\,\,
+%             }
+%             { \qquad }
+%         }
+%       \dim_set_eq:NN \l_tmpa_dim \linegoal
+%       \dim_compare:nNnT { \l_tmpa_dim } < { \textwidth/50 }
+%         { \par }
+%       \hfill \makebox{(\tl_use:N \l__exampaper_choice_paren_answer_tl)}
+%     \group_end:
+%   }
+
+% \NewDocumentCommand { \fillin } { O{} m }
+%   {
+%     \group_begin:
+%       \keys_set:nn { exampaper } {#1}
+%       \bool_if:NTF \l__exampaper_answer_show_bool
+%         {
+%           \underline{ \hspace*{ \l__exampaper_fill_twoside_distance_dim } #2  \hspace*{ \l__exampaper_fill_twoside_distance_dim } }
+%         }
+%         {
+%           \underline{ \hspace*{ \l__exampaper_fill_twoside_distance_dim } \phantom{#2} \hspace*{ \l__exampaper_fill_twoside_distance_dim } }
+%         }
+%     \group_end:
+%   }
+% \NewDocumentCommand{ \exampapersetup }{ m }
+%   { \keys_set:nn { exampaper } {#1} }
 
 
-\begin{document}
+% \ExplSyntaxOff
 
 
-\section{全局设置}
-
-\exampapersetup{ answer = show }
-
-\subsection{选择题测试}
-
-\begin{enumerate}
-  \item 我是选择题题干 \paren{A}
-    \choices{
-      11 &&
-      22 &&
-      33 &&
-      44 &&
-    }
-  \item 我是选择题题干 \paren{B}
-    \choices{
-      11 &&
-      22 &&
-      33 &&
-      44 &&
-    }  
-  \item 我是选择题题干 \paren{C}
-    \choices{
-      11 &&
-      22 &&
-      33 &&
-      44 &&
-    }
-\end{enumerate}
+% \begin{document}
 
 
+% \section{全局设置}
 
-\subsection{古诗默写}
+% \exampapersetup{ answer = show }
 
+% \subsection{选择题测试}
 
-横看成岭侧成峰，\fillin{远近高低各不同}。
-
-横看成岭侧成峰，\fillin{远近高低各不同}。
-
-
-\subsection{短语填空}
-
-杨老师是 \fillin[twoside = 0.8em]{优秀人民教师}
-
-杨老师是 \fillin{优秀人民教师}
-
-杨老师是 \fillin[twoside = 1.5em]{优秀人民教师}
-
-
-\exampapersetup{ answer = hide }
-
-\subsection{选择题测试}
-
-\begin{enumerate}
-  \item 我是选择题题干 \paren{A}
-    \choices{
-      11 &&
-      22 &&
-      33 &&
-      44 &&
-    }
-  \item 我是选择题题干 \paren{B}
-    \choices{
-      11 &&
-      22 &&
-      33 &&
-      44 &&
-    }  
-  \item 我是选择题题干 \paren{C}
-    \choices{
-      11 &&
-      22 &&
-      33 &&
-      44 &&
-    }
-\end{enumerate}
+% \begin{enumerate}
+%   \item 我是选择题题干 \paren{A}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+%   \item 我是选择题题干 \paren{B}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }  
+%   \item 我是选择题题干 \paren{C}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+% \end{enumerate}
 
 
 
-\subsection{古诗默写}
+% \subsection{古诗默写}
 
 
-横看成岭侧成峰，\fillin{远近高低各不同}。
+% 横看成岭侧成峰，\fillin{远近高低各不同}。
 
-横看成岭侧成峰，\fillin{远近高低各不同}。
-
-
-\subsection{短语填空}
-
-杨老师是 \fillin[twoside = 0.8em]{优秀人民教师}
-
-杨老师是 \fillin{优秀人民教师}
-
-杨老师是 \fillin[twoside = 1.5em]{优秀人民教师}
+% 横看成岭侧成峰，\fillin{远近高低各不同}。
 
 
+% \subsection{短语填空}
 
-\section{局部设置}
+% 杨老师是 \fillin[twoside = 0.8em]{优秀人民教师}
 
+% 杨老师是 \fillin{优秀人民教师}
 
-\subsection{选择题测试}
-
-\begin{enumerate}
-  \item 我是选择题题干 \paren{A}
-    \choices{
-      11 &&
-      22 &&
-      33 &&
-      44 &&
-    }
-  \item 我是选择题题干 \paren[answer = show]{B}
-    \choices{
-      11 &&
-      22 &&
-      33 &&
-      44 &&
-    }  
-  \item 我是选择题题干 \paren{C}
-    \choices{
-      11 &&
-      22 &&
-      33 &&
-      44 &&
-    }
-\end{enumerate}
+% 杨老师是 \fillin[twoside = 1.5em]{优秀人民教师}
 
 
-\exampapersetup{ answer = show }
-\subsection{古诗默写}
+% \exampapersetup{ answer = hide }
+
+% \subsection{选择题测试}
+
+% \begin{enumerate}
+%   \item 我是选择题题干 \paren{A}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+%   \item 我是选择题题干 \paren{B}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }  
+%   \item 我是选择题题干 \paren{C}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+% \end{enumerate}
 
 
-横看成岭侧成峰，\fillin{远近高低各不同}。
 
-横看成岭侧成峰，\fillin[answer = hide]{远近高低各不同}。
+% \subsection{古诗默写}
 
 
-\subsection{短语填空}
+% 横看成岭侧成峰，\fillin{远近高低各不同}。
 
-杨老师是 \fillin[twoside = 0.8em]{优秀人民教师}
+% 横看成岭侧成峰，\fillin{远近高低各不同}。
 
-杨老师是 \fillin[answer = hide]{优秀人民教师}
 
-杨老师是 \fillin[twoside = 1.5em]{优秀人民教师}
+% \subsection{短语填空}
 
-\end{document}
+% 杨老师是 \fillin[twoside = 0.8em]{优秀人民教师}
+
+% 杨老师是 \fillin{优秀人民教师}
+
+% 杨老师是 \fillin[twoside = 1.5em]{优秀人民教师}
+
+
+
+% \section{局部设置}
+
+
+% \subsection{选择题测试}
+
+% \begin{enumerate}
+%   \item 我是选择题题干 \paren{A}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+%   \item 我是选择题题干 \paren[answer = show]{B}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }  
+%   \item 我是选择题题干 \paren{C}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+% \end{enumerate}
+
+
+% \exampapersetup{ answer = show }
+% \subsection{古诗默写}
+
+
+% 横看成岭侧成峰，\fillin{远近高低各不同}。
+
+% 横看成岭侧成峰，\fillin[answer = hide]{远近高低各不同}。
+
+
+% \subsection{短语填空}
+
+% 杨老师是 \fillin[twoside = 0.8em]{优秀人民教师}
+
+% 杨老师是 \fillin[answer = hide]{优秀人民教师}
+
+% 杨老师是 \fillin[twoside = 1.5em]{优秀人民教师}
+
+% \end{document}
 
 % %% 2022-01-24 杨端老师：选择题括号排版
 % \documentclass{ctexart}
