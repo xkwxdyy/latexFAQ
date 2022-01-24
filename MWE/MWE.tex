@@ -1,3 +1,121 @@
+%% 2022-01-24 杨端：选择题括号排版
+% \documentclass{ctexart}
+% \usepackage{choices}
+% \usepackage{linegoal}
+% \ExplSyntaxOn
+% \tl_new:N \l__paren_answer_tl
+% \bool_new:N \l__paren_answer_show_bool
+% \keys_define:nn { paren-answer }
+%   {
+%     answer .choice:,
+%     answer / show .code:n =
+%       { \bool_set_true:N \l__paren_answer_show_bool },
+%     answer / hide .code:n =
+%       { \bool_set_false:N \l__paren_answer_show_bool },
+%   }
+% \NewDocumentCommand{ \paren } { O{} m }
+%   {
+%     \group_begin:
+%       \keys_set:nn { paren-answer } {#1}
+%       \tl_set:Nn \l__paren_answer_tl
+%         {
+%           \bool_if:NTF \l__paren_answer_show_bool
+%             {
+%               \,\,#2\,\,
+%             }
+%             { \qquad }
+%         }
+%       \dim_set_eq:NN \l_tmpa_dim \linegoal
+%       \dim_compare:nNnT { \l_tmpa_dim } < { \textwidth/50 }
+%         { \par }
+%       \hfill \makebox{(\tl_use:N \l__paren_answer_tl)}
+%     \group_end:
+%   }
+
+% \NewDocumentCommand{ \parensetup }{ m }
+%   { \keys_set:nn { paren-answer } {#1} }
+% \ExplSyntaxOff
+
+
+% \begin{document}
+
+% \section{答案控制测试}
+% \parensetup{ answer = show }
+
+% \begin{enumerate}
+%   \item 我是选择题题干 \paren{A}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+%   \item 我是选择题题干 \paren[answer = hide]{B}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }  
+%   \parensetup{ answer = hide }
+%   \item 我是选择题题干 \paren{C}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+% \end{enumerate}
+
+
+
+% \section{括号换行测试}
+
+% \begin{enumerate}
+%   \item 我是选择题题干我是选择题题干我是选择题题干我是选择题 \paren{D}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+%   \item 我是选择题题干我是选择题题干我是选择题题干我是选择题我 \paren{D}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+%   \item 我是选择题题干我是选择题题干我是选择题题干我是选择题我我 \paren{D}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+%   \item 我是选择题题干我是选择题题干我是选择题题干我是选择题我我我 \paren{D}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+%   \item 我是选择题题干我是选择题题干我是选择题题干我是选择题我我我我 \paren{D}
+%     \choices{
+%       11 &&
+%       22 &&
+%       33 &&
+%       44 &&
+%     }
+%   \item 我是选择题题干我是选择题题干我是选择题题干我是选择题我我我我我 \paren{D}
+%   \choices{
+%     11 &&
+%     22 &&
+%     33 &&
+%     44 &&
+%   }
+% \end{enumerate}
+% \end{document}
 %% 2022-01-20 陈晓：想让enumerate环境紧跟文字而不另起一行
 % \documentclass{ctexart}
 % \usepackage{varwidth}
